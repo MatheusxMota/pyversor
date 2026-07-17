@@ -1,50 +1,80 @@
-# Pyversor - Gerador Automatizado de Vídeos para Vendas
+# Pyversor - Automação de Vídeos para Vendas
 
-O **Pyversor** é uma solução completa para automatizar a criação de vídeos de alta conversão para TikTok, Reels e YouTube Shorts.
+O **Pyversor** é uma solução de engenharia para automação de criação de conteúdo audiovisual, desenhada especificamente para maximizar conversão em plataformas de mídia vertical como **TikTok**, **Instagram Reels** e **YouTube Shorts**.
 
-## 🚀 O que o Pyversor oferece
-- **Arquitetura Moderna:** Vídeos renderizados com sistema de duas camadas (fundo desfocado e imagem centralizada em *contain*), garantindo visual limpo sem cortes indesejados.
-- **Roteiros Inteligentes:** Criação de textos publicitários persuasivos utilizando o modelo Llama 3.1.
-- **Voz Neural:** Narração natural com Microsoft Edge TTS.
-- **Mixagem Profissional:** Integração automática de narração com trilhas sonoras de fundo.
-- **Legendas Automáticas:** Adição de legendas legíveis e estilosas diretamente no vídeo.
+## 🚀 Funcionalidades Principais
 
----
-
-## 🛠️ Requisitos de Sistema
-
-- Python 3.10 ou superior
-- FFmpeg (instalado e configurado no PATH)
-- Token do Hugging Face (HF_TOKEN)
+*   **Renderização Inteligente:** Sistema de composição de vídeo em duas camadas:
+    *   **Background:** Imagem do produto com *cover* e efeito de *blur* para preenchimento total do frame 9:16.
+    *   **Foreground:** Imagem original ajustada via *contain* para máxima visibilidade, sem cortes.
+*   **Copywriting Orientado a Conversão:** Integração com LLMs (via Hugging Face) para criação de roteiros de vendas baseados na URL do produto.
+*   **Engenharia de Áudio:** Sintetização de narração natural (Edge TTS) e mixagem inteligente com trilhas sonoras de fundo, incluindo suporte a *fades* automáticos.
+*   **Legendas Dinâmicas:** Aplicação automática de legendas estilizadas no vídeo.
 
 ---
 
-## ⚙️ Instalação e Execução
+## 🛠️ Stack Tecnológica
 
-### 1. Configuração do Ambiente
+*   **Linguagem:** Python 3.10+
+*   **Web Framework:** FastAPI
+*   **Vídeo & Áudio:** MoviePy & FFmpeg
+*   **IA & NLP:** Hugging Face Transformers (Llama 3.1) & Microsoft Edge TTS
+
+---
+
+## ⚙️ Instalação e Configuração
+
+### 1. Pré-requisitos
+*   [FFmpeg](https://ffmpeg.org/) instalado e adicionado ao `PATH` do sistema.
+*   Python 3.10 ou superior.
+
+### 2. Preparação do Ambiente
 ```bash
-# Clone o projeto e entre na pasta
-cd C:/Users/matheus/Desktop/Pyversor
+# Clone o projeto
+git clone <url-do-repositorio>
+cd pyversor
 
-# Instale as dependências a partir do arquivo fornecido
+# Configure o ambiente virtual e instale as dependências
+python -m venv venv
+# No Windows:
+.\venv\Scripts\Activate.ps1
+# No Linux/macOS:
+source venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
-### 2. Configuração
-Crie um arquivo `.env` na raiz do projeto com o seu token:
+### 3. Configuração de Variáveis
+Crie um arquivo `.env` na raiz:
 ```env
-HF_TOKEN=seu_token_aqui
-```
-
-### 3. Execução
-Inicie o servidor de desenvolvimento:
-```bash
-uvicorn app:app --reload
+HF_TOKEN=seu_token_huggingface_aqui
 ```
 
 ---
 
-## 💡 Como Funciona
-A aplicação recebe a URL de um produto, processa a imagem para o formato vertical (9:16), gera um roteiro, sintetiza o áudio, aplica efeitos de fundo, mixa a trilha sonora e gera um arquivo `.mp4` pronto para postagem.
+## 🖥️ Como Utilizar
 
-*Mais informações sobre desenvolvimento podem ser encontradas em `DEVELOPMENT_NOTES.md`.*
+1.  **Imagem do Produto:** Coloque a imagem em `imagens_produtos/` (nomeie como `image.*`).
+2.  **Músicas:** Adicione arquivos `.mp3` ou `.wav` em `musicas/`.
+3.  **Execução:**
+    ```bash
+    uvicorn app:app --reload
+    ```
+4.  **Endpoint API:** Acesse `http://127.0.0.1:8000/docs` para visualizar a interface Swagger e realizar testes via `POST /identificar-e-gerar-video/`.
+
+---
+
+## 🐛 Troubleshooting & Suporte
+
+*   **Vídeo sem música:** Verifique os logs de saída do servidor (`DEBUG` e `ERRO`) ao realizar a requisição.
+*   **Erro de renderização:** Certifique-se de que o FFmpeg está instalado corretamente (`ffmpeg -version` no terminal).
+*   **Fonte da Legenda:** A fonte padrão é buscada em `assets/fonts/Roboto-Regular.ttf`.
+
+---
+
+## 📂 Estrutura do Projeto
+
+*   `/services`: Contém a lógica de negócio principal (AI, Vídeo, Imagem).
+*   `/utils`: Funções utilitárias auxiliares.
+*   `/musicas`: Repositório de áudios de fundo.
+*   `/app.py`: Entrada da API e rotas principais.
