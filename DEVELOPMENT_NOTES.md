@@ -7,7 +7,7 @@ Este arquivo contém o histórico de melhorias técnicas e observações sobre o
 ### [14/07/2026] - Migração para Pipeline 100% Local
 *   **Descrição:** Substituição da geração de vídeo via API Hugging Face (SVD) por um pipeline local e gratuito.
 *   **Mudanças:**
-    *   Implementado `KenBurnsMotionProvider` para animação local (zoom/pan) usando `moviepy`.
+    *   Implementado sistema de fundo fixo na imagem localmente usando `moviepy`.
     *   Implementado sistema de mixagem de áudio (narração + trilha de fundo com controle de volume e fade-out).
     *   Criada estrutura `musicas/` para gerenciamento de trilhas sonoras.
     *   Endpoint `/identificar-e-gerar-video/` agora opera 100% sem chamadas de rede para vídeo.
