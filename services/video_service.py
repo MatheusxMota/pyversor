@@ -73,18 +73,26 @@ async def criar_video_tiktok(texto: str, imagem_path: str, output_filename: str)
 
         # 4. Mixagem de Áudio (Narração + Música)
         musica_path = selecionar_musica_fundo()
+        print(f"DEBUG: Musica selecionada: {musica_path}")
         if musica_path:
-            music_clip = AudioFileClip(musica_path)
-            
-            # Ajuste de volume e duração
-            music_clip = music_clip.with_volume_scaled(0.15).subclipped(0, duracao)
-            
-            # Fade-out nos últimos 1.5s
-            if duracao > 2.0:
-                music_clip = music_clip.with_effects([afx.AudioFadeOut(1.5)])
-            
-            final_audio = CompositeAudioClip([narration_clip, music_clip])
+            try:
+                music_clip = AudioFileClip(musica_path)
+                print(f"DEBUG: Musica carregada: {musica_path}, duracao: {music_clip.duration}")
+                
+                # Ajuste de volume e duração
+                music_clip = music_clip.with_volume_scaled(0.15).subclipped(0, duracao)
+                
+                # Fade-out nos últimos 1.5s
+                if duracao > 2.0:
+                    music_clip = music_clip.with_effects([afx.AudioFadeOut(1.5)])
+                
+                final_audio = CompositeAudioClip([narration_clip, music_clip])
+                print("DEBUG: Audio mixado com musica.")
+            except Exception as e:
+                print(f"ERRO: Falha ao carregar musica: {e}")
+                final_audio = narration_clip
         else:
+            print("DEBUG: Nenhuma musica encontrada.")
             final_audio = narration_clip
             
         video_final = video_final.with_audio(final_audio)
